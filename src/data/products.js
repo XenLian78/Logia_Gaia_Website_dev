@@ -6,7 +6,7 @@ export const PRODUCTS = [
     slug: 'monakrivo-rose-dry',
     year: '2026',
     quality: 'Premium',
-    image: '/products/monakrivo-rose-dry.jpg',
+    image: 'public/products/monakrivo-red-dry.JPG',
     translateY: false,
     hasVariations: false,
     // Ρύθμιση ποσοστών Taste Graph για το Rose
@@ -26,7 +26,7 @@ export const PRODUCTS = [
     slug: 'monakrivo-white-dry',
     year: '2026',
     quality: 'Premium',
-    image: '/products/monakrivo-white-dry.jpg',
+    image: 'public/products/monakrivo-white-dry.JPG',
     translateY: true,
     hasVariations: false,
     // Ρύθμιση ποσοστών Taste Graph για το Λευκό
@@ -46,7 +46,7 @@ export const PRODUCTS = [
     slug: 'monakrivo-red-dry',
     year: '2016',
     quality: 'Premium',
-    image: '/products/monakrivo-red-dry.jpg',
+    image: 'public/products/monakrivo-red-dry.jpg',
     translateY: false,
     hasVariations: false,
     // Ρύθμιση ποσοστών Taste Graph για το Κόκκινο
@@ -67,7 +67,7 @@ export const PRODUCTS = [
     year: '2026',
     quality: 'PREMIUM',
     category: 'oil', // Αλλαγή του label ΕΝΑΤΣΗ στη σελίδα του λαδιού
-    image: '/products/extra-virgin-olive-oil.jpg',
+    image: 'public/products/extra-virgin-olive-oil.jpg',
     translateY: true,
     hasVariations: false,
     // Ρύθμιση ποσοστών Taste Graph για το Ελαιόλαδο
