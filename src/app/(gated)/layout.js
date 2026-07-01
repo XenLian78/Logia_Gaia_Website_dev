@@ -20,7 +20,7 @@ export default function GatedLayout({ children }) {
       <main className="flex-grow pt-24">{children}</main>
       <Footer />
 
-      {/* Floating Navigation Controls - Στρατηγική Τοποθέτηση στα Δεξιά (Όπως laoudis.gr) */}
+      {/* Floating Navigation Controls - Στρατηγική Toποθέτηση στα Δεξιά (Όπως laoudis.gr) */}
       {/* Αν ο χρήστης είναι στη Philosophy, ολόκληρο το container κρύβεται τελείως */}
       {!isPhilosophyHome && (
         <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-4">

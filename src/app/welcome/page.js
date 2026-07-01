@@ -11,7 +11,7 @@ export default function WelcomePage() {
       {/* Background Hero Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/welcome/hero_image_welcome_page.jpg')" }}
+        style={{ backgroundImage: "url('/welcome/hero-image-welcome-page.jpg')" }}
       />
       
       {/* Dark Overlay */}

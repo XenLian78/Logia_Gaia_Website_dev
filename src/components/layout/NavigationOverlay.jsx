@@ -1,6 +1,6 @@
 // Burger Menu //
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import { useRouter } from 'next/navigation';
@@ -32,7 +32,6 @@ const linkItemVariants = {
 export default function NavigationOverlay({ isOpen, onClose }) {
   const { lang } = useLanguage();
   const router = useRouter();
-  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -86,25 +85,16 @@ export default function NavigationOverlay({ isOpen, onClose }) {
           {/* Main Menu Links */}
           <nav className="relative z-10 w-full max-w-[1440px] px-6 md:px-[120px]">
             <motion.ul variants={listVariants} className="flex flex-col space-y-6 md:space-y-8">
-              {MENU_LINKS.map((link, index) => {
+              {MENU_LINKS.map((link) => {
                 const label = link.translations[lang] || link.translations['EN'];
-                const isAnyHovered = hoveredIndex !== null;
-                const isCurrentHovered = hoveredIndex === index;
 
                 return (
                   <motion.li key={link.id} variants={linkItemVariants}>
                     <span
                       onClick={() => handleNavigation(link.path)}
-                      onMouseEnter={() => setHoveredIndex(index)}
-                      onMouseLeave={() => setHoveredIndex(null)}
-                      style={{ 
-                        opacity: isAnyHovered && !isCurrentHovered ? 0.3 : 1,
-                        transform: isCurrentHovered ? 'translateX(20px)' : 'translateX(0px)'
-                      }}
-                      className="relative inline-block font-display font-light text-4xl md:text-6xl lowercase cursor-pointer transition-all duration-500 text-[#e5e2e1] hover:text-[#C5A880] group"
+                      className="relative inline-block font-display font-light text-xl md:text-3xl lowercase cursor-pointer transition-colors duration-500 text-[#7d7a78]"
                     >
                       {label}
-                      <span className="absolute bottom-[-4px] left-0 w-0 h-[1px] bg-[#C5A880] group-hover:w-full transition-all duration-500" />
                     </span>
                   </motion.li>
                 );

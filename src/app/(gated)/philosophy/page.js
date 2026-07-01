@@ -17,6 +17,7 @@ export default function PhilosophyPage() {
   
   const [dragConstraints, setDragConstraints] = useState({ right: 0, left: 0 });
   const [isMuted, setIsMuted] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Global scroll positions για το Hero section
   const { scrollY } = useScroll();
@@ -29,8 +30,27 @@ export default function PhilosophyPage() {
   });
 
   // Smooth cinematic transforms 
-  const videoScale = useTransform(scrollYProgress, [0, 0.5], [1.08, 1.0]);
+  const videoScaleTransform = useTransform(scrollYProgress, [0, 0.5], [1.08, 1.0]);
   const shadowOpacity = useTransform(scrollYProgress, [0, 0.4], [0.85, 0.35]);
+
+  // Ανίχνευση mobile για απενεργοποίηση του scale bottleneck
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
+  }, []);
+
+  // Στρατηγικό fallback για απρόσκοπτο αναγκαστικό playback σε mobile (Safari/Chrome Mobile)
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        console.log("Autoplay prevented on mobile, retrying muted...", err);
+      });
+    }
+  }, []);
 
   // Υπολογισμός των ορίων κύλισης για mobile/tablet
   useEffect(() => {
@@ -127,7 +147,7 @@ export default function PhilosophyPage() {
           {/* Mobile Left Arrow Button */}
           <button 
             onClick={() => scrollCarousel('left')}
-            className="absolute left-6 z-40 p-2.5 bg-black/60 border border-white/10 text-on-surface active:scale-95 transition-all rounded-full md:hidden"
+            className="absolute left-6 z-40 w-12 h-12 flex items-center justify-center bg-black/60 border border-white/10 text-on-surface active:scale-95 transition-all rounded-full md:hidden"
             aria-label="Previous Product"
           >
             <svg className="w-4 h-4 transform rotate-90" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -138,7 +158,7 @@ export default function PhilosophyPage() {
           {/* Mobile Right Arrow Button */}
           <button 
             onClick={() => scrollCarousel('right')}
-            className="absolute right-6 z-40 p-2.5 bg-black/60 border border-white/10 text-on-surface active:scale-95 transition-all rounded-full md:hidden"
+            className="absolute right-6 z-40 w-12 h-12 flex items-center justify-center bg-black/60 border border-white/10 text-on-surface active:scale-95 transition-all rounded-full md:hidden"
             aria-label="Next Product"
           >
             <svg className="w-4 h-4 transform -rotate-90" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -173,15 +193,15 @@ export default function PhilosophyPage() {
         ref={videoSectionRef}
         className="relative w-full h-screen bg-black overflow-hidden z-20 flex items-center justify-center"
       >
-        {/* Dynamic Zoom Video Wrapper */}
+        {/* Dynamic Zoom Video Wrapper - Απενεργοποίηση scale στα κινητά για εξάλειψη του jank/freeze */}
         <motion.div 
-          style={{ scale: videoScale }}
+          style={{ scale: isMobile ? 1.0 : videoScaleTransform }}
           className="absolute inset-0 w-full h-full origin-center"
         >
           <video
             ref={videoRef}
             autoPlay
-            muted
+            muted={true}
             loop
             playsInline
             preload="auto"
@@ -197,14 +217,6 @@ export default function PhilosophyPage() {
           className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none z-22"
         />
 
-        {/* Content Overlay inside Video */}
-        <div className="relative z-25 text-center px-4">
-          <span className="font-body text-[10px] tracking-[0.4em] uppercase text-white/40 block mb-2">
-            {lang === 'EL' ? 'ΚΤΗΜΑ ΑΓΙΟΣ ΘΩΜΑΣ' : 'AGIOS THOMAS ESTATE'}
-          </span>
-          <div className="w-8 h-[1px] bg-white/20 mx-auto" />
-        </div>
-
         {/* Minimal Audio Control Button */}
         <button
           onClick={() => setIsMuted(!isMuted)}
@@ -213,7 +225,7 @@ export default function PhilosophyPage() {
         >
           {isMuted ? (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6L4.5 9H1.5v6h3l4.5 3.75V5.25z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l-2.25-2.25M19.5 12l-2.25 2.25m-10.5-6L4.5 9H1.5v6h3l4.5 3.75V5.25z" />
             </svg>
           ) : (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
